@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nails Maca | Turnos</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#fff4f8;color:#783b58}
+header{background:#f5c6d8;padding:25px;text-align:center}
+h1{font-family:Georgia,serif;font-size:38px}
+main{max-width:700px;margin:30px auto;padding:20px}
+section{background:white;padding:22px;margin-bottom:20px;border-radius:18px;box-shadow:0 3px 12px #e8b9cc}
+.servicio{border-bottom:1px solid #f0d8e2;padding:12px 0;display:flex;justify-content:space-between;gap:10px}
+label{display:block;margin-top:15px;font-weight:bold}
+input,select,button{width:100%;padding:13px;margin-top:7px;border:1px solid #e8b9cc;border-radius:10px;font-size:16px}
+button{background:#d96b96;color:white;border:none;margin-top:22px;font-weight:bold}
+footer{text-align:center;padding:25px}
+</style>
+</head>
+<body>
+<header>
+<h1>Nails Maca 💗</h1>
+<p>Un momento para vos</p>
+</header>
+<main>
+<section>
+<h2>Nuestros servicios</h2>
+<div class="servicio"><span>Esmaltado semipermanente</span><b>$20.000</b></div>
+<div class="servicio"><span>Kapping</span><b>$24.000</b></div>
+<div class="servicio"><span>Soft gel</span><b>$25.000</b></div>
+<div class="servicio"><span>Retiro semipermanente</span><b>$3.000</b></div>
+<div class="servicio"><span>Retiro kapping o soft gel</span><b>$6.000</b></div>
+<div class="servicio"><span>Diseños y decoración</span><b>Desde $2.000</b></div>
+</section>
+
+<section>
+<h2>Solicitá tu turno 💅</h2>
+<form id="turno">
+<label>Tu nombre</label>
+<input id="nombre" required placeholder="Escribí tu nombre">
+
+<label>Servicio</label>
+<select id="servicio" required>
+<option value="">Elegí un servicio</option>
+<option>Esmaltado semipermanente</option>
+<option>Kapping</option>
+<option>Soft gel</option>
+<option>Retiro semipermanente</option>
+<option>Retiro kapping o soft gel</option>
+<option>Diseños y decoración</option>
+</select>
+
+<label>Fecha</label>
+<input type="date" id="fecha" required>
+
+<label>Horario</label>
+<select id="hora" required>
+<option value="">Primero elegí servicio y fecha</option>
+</select>
+
+<button type="submit">Solicitar turno por WhatsApp</button>
+</form>
+<p>Tu turno queda confirmado cuando Maca te responda por WhatsApp.</p>
+</section>
+
+<section>
+<h2>¿Dónde estamos?</h2>
+<p>📍 Roberto Millikan 7725</p>
+<p>🕘 Lunes a sábado de 9:00 a 21:00</p>
+<p>Domingos cerrado</p>
+</section>
+</main>
+<footer>Nails Maca · Hecho con cariño 💗</footer>
+
+<script>
+const fecha=document.getElementById("fecha");
+const hora=document.getElementById("hora");
+const servicio=document.getElementById("servicio");
+const duraciones={
+"Esmaltado semipermanente":60,
+"Kapping":90,
+"Soft gel":120,
+"Retiro semipermanente":30,
+"Retiro kapping o soft gel":30,
+"Diseños y decoración":60
+};
+fecha.min=new Date().toLocaleDateString("en-CA");
+
+function cargarHorarios(){
+hora.innerHTML="";
+if(!fecha.value||!servicio.value)return;
+if(new Date(fecha.value+"T12:00:00").getDay()===0){
+hora.add(new Option("Domingo cerrado",""));
+return;
+}
+const duracion=duraciones[servicio.value];
+for(let m=540;m+duracion<=1260;m+=30){
+const h=String(Math.floor(m/60)).padStart(2,"0");
+const min=String(m%60).padStart(2,"0");
+hora.add(new Option(h+":"+min,h+":"+min));
+}
+}
+fecha.addEventListener("change",cargarHorarios);
+servicio.addEventListener("change",cargarHorarios);
+
+document.getElementById("turno").addEventListener("submit",function(e){
+e.preventDefault();
+const mensaje="Hola Maca 💗 Quiero solicitar un turno.%0A"+
+"Nombre: "+encodeURIComponent(document.getElementById("nombre").value)+
+"%0A Servicio: "+encodeURIComponent(servicio.value)+
+"%0A Fecha: "+encodeURIComponent(fecha.value)+
+"%0A Horario: "+encodeURIComponent(hora.value);
+window.open("https://wa.me/5493513929082?text="+mensaje,"_blank");
+});
+</script>
+</body>
+</html>
